@@ -344,10 +344,12 @@ type="text/javascript"
 
 
 
+{% comment %} const secretKey = 'sk_test_51NZTCUD0PMGPSuj4SY0Mqqmuy1YkOHa4YFFlHFqaphXE6vdhcCJKtyqsKJ9Wzy10acbth3pUlb04HfzYB2ucvAGg00emcxaUJD'; {% endcomment %}
+
 <script type="text/javascript">
     async function fetchPaidRevenue() {
       try {
-        const secretKey = 'sk_test_51NZTCUD0PMGPSuj4SY0Mqqmuy1YkOHa4YFFlHFqaphXE6vdhcCJKtyqsKJ9Wzy10acbth3pUlb04HfzYB2ucvAGg00emcxaUJD';
+        const secretKey = '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';
 
         const response = await fetch('https://api.stripe.com/v1/charges', {
           method: 'GET',

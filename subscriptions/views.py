@@ -134,7 +134,7 @@ def direct_create_account_stripe_app_create_session(request):
         if not plan or not monthly_annually:
             return JsonResponse({'error': 'monthly_annually and plan is required.'}, status=400)
         
-        a="direct_create_account_stripe_app_create_session"
+        # a="direct_create_account_stripe_app_create_session"
 
         # check the user is already subscribe or not if yes then stop in subscribing and send the month or year
         try:
@@ -459,9 +459,9 @@ def stripe_webhook(request):
     else:
         if event.type == 'customer.subscription.created':
             # try:
-            print("====================customer.subscription.created==========================")
-            print(request.data)
-            print("======================customer.subscription.created========================")
+            # print("====================customer.subscription.created==========================")
+            # print(request.data)
+            # print("======================customer.subscription.created========================")
             customer_stripe_id=request.data["data"]["object"]["customer"]
             instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
             if instance.status=="trial":
@@ -510,9 +510,9 @@ def stripe_webhook(request):
             # except:
             #     pass
     if event.type == 'customer.subscription.deleted':
-            print("====================customer.subscription.deleted==========================")
-            # print(request.data)
-            print("======================customer.subscription.deleted========================")
+            # print("====================customer.subscription.deleted==========================")
+            # # print(request.data)
+            # print("======================customer.subscription.deleted========================")
             customer_stripe_id=request.data["data"]["object"]["customer"]
             instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
             if request.data["data"]["object"]["trial_start"] is None:
@@ -675,7 +675,7 @@ def get_trail_total_subscribers(request):
                 count += 1
     return JsonResponse({'subscribed_trail_users_count': count})
 
-
+from core.settings import stripe_production
 def subscribed_users_details(request):
     subscribed_customers = stripe.Customer.list()
     details = []
@@ -684,11 +684,15 @@ def subscribed_users_details(request):
         customer_subscriptions = stripe.Subscription.list(customer=customer.id)
         for subscription in customer_subscriptions.auto_paging_iter():
             if subscription.status == "active":
+                if stripe_production:
+                    url_for_stripe=f"https://dashboard.stripe.com/invoices/{subscription.latest_invoice}", # for real invoices
+                else:
+                    url_for_stripe=f"https://dashboard.stripe.com/test/invoices/{subscription.latest_invoice}",
+
                 customer_details = {
                     "email": customer.email,
                     "amount_paid": subscription.plan.amount,
-                    "invoice_url": f"https://dashboard.stripe.com/test/invoices/{subscription.latest_invoice}",
-                    # "invoice_url": f"https://dashboard.stripe.com/invoices/{subscription.latest_invoice}", # for real invoices
+                    "invoice_url": url_for_stripe
                     # Add other details you want
                 }
                 details.append(customer_details)

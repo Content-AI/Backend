@@ -1,0 +1,266 @@
+sudo nano /etc/systemd/system/gunicorn.socket
+
+
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+
+
+
+sudo nano /etc/systemd/system/gunicorn.service
+
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/ai-aws
+ExecStart=/home/ubuntu/myprojectenv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          --timeout 300 \
+          core.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+sudo nano /etc/nginx/sites-available/myproject
+
+server {
+    listen 80;
+    server_name 13.233.1.178;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/ai-aws/statiicfiles;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+
+
+server {
+    listen 80;
+    server_name 43.205.174.167;
+
+    ssl_certificate /etc/nginx/ssl/your_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/your_certificate.key;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/ai-aws/statiicfiles;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+
+
+==============
+server {
+    listen 80 default_server;
+    server_name _;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl default_server;
+    server_name _;
+
+    ssl_certificate /etc/nginx/ssl/your_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/your_certificate.key;
+
+    
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/ai-aws/statiicfiles;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+
+sudo usermod -a -G ubuntu www-data
+
+
+
+
+
+=======event stream=======
+=====this worked===
+server {
+  listen 80;
+  server_name 3.89.192.241;
+
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
+
+  location /static/ {
+    root /home/ubuntu/ai-aws/statiicfiles;
+  }
+
+  location /v1/chat/_chat_question_/ask/ {
+    proxy_pass http://unix:/run/gunicorn.sock;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_buffering off;
+  }
+
+  location / {
+    include proxy_params;
+    proxy_pass http://unix:/run/gunicorn.sock;
+  }
+}
+
+
+
+
+
+server {
+  listen 80;
+  server_name 65.1.142.190 uffai.com www.uffai.com;
+
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
+
+  location /static/ {
+    root /home/ubuntu/ai-aws/statiicfiles;
+  }
+
+ location /v1/chat/_chat_question_/ask/ {
+    proxy_pass http://unix:/run/gunicorn.sock;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_buffering off;
+    proxy_read_timeout 5m;
+ }
+
+  location / {
+    include proxy_params;
+    proxy_pass http://unix:/run/gunicorn.sock;
+  }
+}
+
+
+
+=============after ssl certificat =============
+server {
+    listen 443 ssl;
+    server_name app.uffai.com www.app.uffai.com;
+    ssl_certificate /etc/letsencrypt/live/app.uffai.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/app.uffai.com/privkey.pem;
+
+    # Additional SSL settings, such as SSL protocols, ciphers, and security headers.
+    include /etc/nginx/snippets/ssl-params.conf;
+
+    location = /favicon.ico {
+      access_log off;
+      log_not_found off;
+    }
+
+    location /static/ {
+      root /home/ubuntu/ai-aws/statiicfiles;
+    }
+
+    location /v1/chat/_chat_question_/ask/ {
+        proxy_pass http://unix:/run/gunicorn.sock;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_buffering off;
+        proxy_read_timeout 5m;
+    }
+
+    location / {
+      include proxy_params;
+      proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+    location ~ /.well-known/acme-challenge {
+        allow all;
+    }
+
+}
+
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name app.uffai.com www.app.uffai.com;
+
+    return 302 https://$server_name$request_uri;
+}
+
+
+==============timeout for 5min all URL=======
+server {
+    listen 443 ssl;
+    server_name app.uffai.com www.app.uffai.com;
+    ssl_certificate /etc/letsencrypt/live/app.uffai.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/app.uffai.com/privkey.pem;
+
+    # Additional SSL settings, such as SSL protocols, ciphers, and security headers.
+    include /etc/nginx/snippets/ssl-params.conf;
+
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+    }
+
+    location /static/ {
+        root /home/ubuntu/ai-aws/statiicfiles;
+    }
+
+    location ~ ^/(v1/chat/_chat_question_/ask/|v1/brand_voice/data/|v1/brand_voice/extract-url/|v1/template/uploading_video|v1/template/extracting_speech_from_video|v1/template/getting_the_recap_of_audio|v1/template/file_first_step/|v1/template/convert_audio|v1/template/extracting_speech_from_video|v1/template/getting_the_recap_of_audio|v1/template/generate_speech_text_answer/|v1/template/image_generator) {
+        client_max_body_size 50M;  # Adjust the size as needed (e.g., 50MB)
+        proxy_pass http://unix:/run/gunicorn.sock;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_buffering off;
+        proxy_read_timeout 5m;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+    location ~ /.well-known/acme-challenge {
+        allow all;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name app.uffai.com www.app.uffai.com;
+
+    return 302 https://$server_name$request_uri;
+}

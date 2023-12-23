@@ -1,0 +1,7 @@
+/* Add this CSS to your stylesheet or inline style */
+.scrollable-div {
+    max-height: 500px; /* Adjust the height as per your requirements */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    padding: 10px; /* Optional: Add padding to the container */
+  }
+  

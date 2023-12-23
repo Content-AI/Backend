@@ -40,6 +40,7 @@ urlpatterns = [
     path('project_template/<str:data>',project_template, name='project_template'),
     path('select_field_of_template',select_field_of_template, name='select_field_of_template'),
     path('test',test, name='test'),
+
     path('upload-image/', upload_image, name='upload_image'),
 
     path('token_generated/', token_generated, name='token_generated'),

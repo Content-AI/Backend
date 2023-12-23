@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* Hide the default scrollbar */
+/* ::-webkit-scrollbar {
+  width: 0.4rem;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 0.2rem;
+} */
+
+/* Style the custom scrollbar when hovering */
+/* ::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+} */
+
+.kep-login-facebook.metro {
+  width: 200px !important;
+  height: 36px !important;
+  line-height: 25px;
+  padding: 3px;
+  font-size: 12px;
+  /* text-transform: lowercase; */
+  background-color: blue;
+  color: white;
+  outline: none;
+}
+
+/* ===============Bouncing loading ================ */
+
+.bouncing-loader {
+  display: flex;
+  justify-content: center;
+  margin: 2px;
+  /* margin-top: 10px; */
+  padding: 1px;
+}
+
+.bouncing-loader > div {
+  width: 13px;
+  height: 13px;
+  margin: 1px 2px;
+  border-radius: 50%;
+  background-color: #e7cdcd;
+  opacity: 1;
+  animation: bouncing-loader 0.6s infinite alternate;
+}
+
+@keyframes bouncing-loader {
+  to {
+    opacity: 0.1;
+    transform: translateY(-7px);
+  }
+}
+
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* 
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  content: attr(title);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.tooltip:hover::before {
+  visibility: visible;
+  opacity: 1;
+} */
+
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip-text {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-container [title] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.ql-toolbar.ql-snow {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: #fff !important;
+  z-index: 1 !important;
+}
+
+/* ==========Modal popup========== */
+
+/* analyzing tone css */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid transparent;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.ce-block.loading {
+  position: relative;
+}
+
+.ce-block.loading .ce-block__content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  background-image: url("https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/loading.gif");
+  background-position: 10px 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+ 
+.dark .ce-block.loading .ce-block__content::after {
+  /* background-color: #2d3748; */
+  background-color: #4a5568;
+}
+
+.ce-block.active {
+  margin-left: -10px;
+}
+
+.ce-block.active .ce-paragraph {
+  padding-left: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.ce-block .ce-paragraph[data-placeholder]:empty:focus:before {
+  content: "Type / to generate content";
+  opacity: 1;
+}
+
+.ce-block.active .ce-paragraph[data-placeholder]:empty:before {
+  content: "Ask or Search anything";
+  opacity: 1;
+}

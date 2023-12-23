@@ -1,0 +1,54 @@
+/* CancelSubscriptionDialog.css */
+
+/* Styles for the backdrop overlay */
+.dialog-backdrop-enter {
+    opacity: 0;
+  }
+  
+  .dialog-backdrop-enter-active {
+    opacity: 1;
+    transition: opacity 500ms;
+  }
+  
+  .dialog-backdrop-exit {
+    opacity: 1;
+  }
+  
+  .dialog-backdrop-exit-active {
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+  
+  /* Styles for the dialog box */
+  .dialog-enter {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  
+  .dialog-enter-active {
+    transform: scale(1);
+    opacity: 1;
+    transition: transform 500ms, opacity 500ms;
+  }
+  
+  .dialog-exit {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+  .dialog-exit-active {
+    transform: scale(0.5);
+    opacity: 0;
+    transition: transform 500ms, opacity 500ms;
+  }
+  
+  /* Additional styles for the dialog box */
+  .dialog-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    font-family: Arial, sans-serif;
+  }
+  

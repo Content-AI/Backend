@@ -1,0 +1,205 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* =========editor======= */
+.App {
+	font-family: sans-serif;
+	text-align: center;
+}
+
+html {
+	font-style: 16px;
+}
+
+body {
+	margin: 0;
+}
+
+/* styling button */
+#toggle-edit-btn {
+	background-color: #4267b2;
+	border: 1px solid #4267b2;
+	border-radius: 0.3rem;
+	color: #fff;
+	padding: 1rem 2rem;
+	font-size: 1.2rem;
+	margin: 2rem auto;
+}
+
+#toggle-edit-btn:focus,
+#toggle-edit-btn:hover {
+	cursor: pointer;
+}
+
+/* styling app content container */
+.app-content {
+	margin: 1rem auto;
+	width: 80%;
+	padding: 5%;
+	background-color: #f4f5f9;
+}
+
+/* styling alert text when edit mode is enabled */
+.edit-mode-alert {
+	text-decoration: underline;
+	color: #c80000;
+}
+
+/* styling text parsed */
+.text-container > *,
+.editor-container > * {
+	text-align: left;
+}
+
+
+
+/* =========for editor js need to override========== */
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+h3 {
+  font-size: 1.17rem;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1.33em 0;
+}
+
+h5 {
+  font-size: 0.83rem;
+  font-weight: bold;
+  margin: 1.67em 0;
+}
+
+h6 {
+  font-size: 0.67rem;
+  font-weight: bold;
+  margin: 2.33em 0;
+}
+
+
+
+
+/* styles.css or in your Tailwind CSS configuration */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+/* dark mode */
+/* App.css */
+
+:root {
+  --primary-bg-color: #fff;
+  --primary-text-color: #333;
+  --secondary-bg-color: #f2f2f2;
+  --secondary-text-color: #666;
+}
+
+.dark {
+  --primary-bg-color: #333;
+  --primary-text-color: #fff;
+  --secondary-bg-color: #444;
+  --secondary-text-color: #888;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: var(--secondary-bg-color);
+  padding: 20px;
+  color: var(--secondary-text-color);
+}
+
+
+
+
+
+
+
+
+/* the editor css when click + for editing */
+
+
+/* Original CSS without .ce-popover */
+.show_popup_above_this_div {
+  position: relative;
+  z-index: 1000;
+}
+
+/* Modified CSS for the popup when the body has the 'popup-open' class */
+body.popup-open .ce-popover {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001; /* Higher than the z-index of the specified div */
+}
+
+@media only screen and (max-width: 767px) {
+  body.popup-open .ce-popover {
+    top: calc(50% - 50px) !important; /* Adjust the value based on your design */
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
+

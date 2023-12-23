@@ -1,0 +1,21 @@
+/* Default styles for all screens */
+.placeholder-both-screens::placeholder {
+  /* Styles for big screens */
+  font-size: 16px;
+  color: #000;
+  opacity: 1;
+}
+
+/* Styles for small screens */
+@media (max-width: 640px) {
+  .placeholder-both-screens {
+    width: 100%;
+  }
+
+  .placeholder-both-screens::placeholder {
+    font-size: 10px;
+    font-weight: bold;
+    color: #999;
+    opacity: 1;
+  }
+}

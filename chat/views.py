@@ -26,7 +26,6 @@ class PageNumberPagination(pagination.PageNumberPagination):
 
 
 class ChatTitleViewSet(viewsets.ViewSet):
-
     permission_classes = [IsAuthenticated]
     def list(self,request):
         
