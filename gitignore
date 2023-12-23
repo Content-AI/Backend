@@ -1,0 +1,6 @@
+gunicorn.service
+db.sqlite3
+nginx-myproject
+restart_server.sh
+zappa_settings.json
+server_deploy.txt
