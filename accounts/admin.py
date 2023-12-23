@@ -35,3 +35,5 @@ admin.site.register(Visitor)
 admin.site.register(OTP_TOKEN)
 # admin.site.register(GeneralSetting)
 
+
+
