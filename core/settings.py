@@ -17,13 +17,13 @@ import os
 SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232i3asdfadsfdasf'
 
 # use_db_live="local"
-use_db_live="lightsail_postgres"
+use_db_live="postgres"
 
-pro=True
-# pro=False
+# pro=True
+pro=False
 
-stripe_production=True
-# stripe_production=False
+# stripe_production=True
+stripe_production=False
 
 if pro:
     DEBUG = False
@@ -89,11 +89,13 @@ MIDDLEWARE = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = os.getenv('HOST_USER')
 EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
+
+
+
 
 REST_FRAMEWORK = {
     #     'DEFAULT_PARSER_CLASSES': [
@@ -151,25 +153,43 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
+POSTGRES_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+POSTGRES_PRISMA_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
+POSTGRES_URL_NON_POOLING="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+POSTGRES_USER="default"
+POSTGRES_HOST="ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com"
+POSTGRES_PASSWORD="Fs3D8omYPGuv"
+POSTGRES_DATABASE="verceldb"
+
 if use_db_live=="local":
     # test mode db for local server
-     DATABASES = {
-                'default': {
-                    'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-                }
-     }
-elif use_db_live=="lightsail_postgres":
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+    }
+elif use_db_live=="postgres":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'dbmasteruser',
-            'PASSWORD': '.2aNr<[7)|k0sNgI(.09vgic>FMza[mY',
-            'HOST': 'ls-dd6ac7a7fde7febcdd96494f2a722935717608ca.cchckxmlw6np.ap-south-1.rds.amazonaws.com',  # or your database server address
-            'PORT': '5432', # Default PostgreSQL port is 5432
+            'NAME': POSTGRES_DATABASE,
+            'USER': POSTGRES_USER,
+            'PASSWORD': POSTGRES_PASSWORD,
+            'HOST': POSTGRES_HOST,
+            'PORT': '5432',
         }
     }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': 'postgres',
+    #         'USER': 'dbmasteruser',
+    #         'PASSWORD': '.2aNr<[7)|k0sNgI(.09vgic>FMza[mY',
+    #         'HOST': 'ls-dd6ac7a7fde7febcdd96494f2a722935717608ca.cchckxmlw6np.ap-south-1.rds.amazonaws.com',  # or your database server address
+    #         'PORT': '5432',
+    #     }
+    # }
 
 
 
@@ -426,7 +446,7 @@ if use_db_live=="local":
     FRONT_END_HOST="http://localhost:3000"
     BACK_END_HOST="http://localhost:8000"
 
-if use_db_live=="lightsail_postgres":
+if use_db_live=="postgres":
 
     if stripe_production:
         endpoint_secret_key = 'whsec_SAq1xSAQfck3enXoTqanNMwVsxsG1rBS' # server real key
@@ -477,6 +497,21 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_CUSTOM_DOMAIN="aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com"
 
 
+# EMAIL_HOST_USER = "AKIA23ZBBWRDZKLDLBUP"
+# EMAIL_HOST_PASSWORD = "BPusYLqrQXacd/gt1e4gMtxOff7qxGRxRzWSnpl/E9EV"
+
+
+# EMAIL_BACKEND = 'django_ses.SESBackend'  # Use the Django SES backend
+# # Amazon SES settings
+# AWS_SES_REGION_NAME = 'us-east-1'  # Replace with the AWS SES region you are using
+# AWS_SES_REGION_ENDPOINT = 'email-smtp.us-east-1.amazonaws.com'
+# # Optional settings
+# # DEFAULT_FROM_EMAIL = 'your-sender-email@example.com'
+# # SERVER_EMAIL = 'your-sender-email@example.com'
+# DEFAULT_FROM_EMAIL = 'SASS'
+
+
+
 
 
 # Configure session engine (use database-based sessions)
@@ -511,3 +546,4 @@ SWAGGER_SETTINGS = {
     'JSON_EDITOR': False,  # Disable JSON editor for request/response bodies
     'SHOW_REQUEST_HEADERS': True,  # Show request headers
 }
+
