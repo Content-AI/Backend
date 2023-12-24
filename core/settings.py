@@ -238,6 +238,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cors Settings
 
+
 if pro:
     CORS_ALLOWED_ORIGINS = [
         'https://stripe.com',
