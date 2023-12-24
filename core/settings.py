@@ -242,12 +242,12 @@ if pro:
     CORS_ALLOWED_ORIGINS = [
         'https://stripe.com',
         'https://app.uffai.com',
-        'https://uffai-git-main-web-central.vercel.app'
+        'https://uffai.vercel.app'
     ]
     CORS_ALLOWED_ORIGIN_REGEXES = [
         'https://stripe.com',
         'https://app.uffai.com',
-        'https://uffai-git-main-web-central.vercel.app'
+        'https://uffai.vercel.app'
     ]
 else:
     CORS_ALLOW_CREDENTIALS = True

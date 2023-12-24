@@ -25,11 +25,11 @@ if (local == true) {
   // FRONT_END_URL_GOOGLE_PARAM = "https://app.uffai.com/google"
   // BACKEND_URL = "https://app.uffai.com";
 
-  FRONT_END_URL = "https://uffai-git-main-web-central.vercel.app/v1/subscription/stripe-webhook/"
-  FRONT_END_URL_LINKEDIN = "https://uffai-git-main-web-central.vercel.app/v1/subscription/stripe-webhook"
+  FRONT_END_URL = "https://uffai.vercel.app/v1/subscription/stripe-webhook/"
+  FRONT_END_URL_LINKEDIN = "https://uffai.vercel.app/v1/subscription/stripe-webhook"
 
-  FRONT_END_URL_GOOGLE_PARAM = "https://uffai-git-main-web-central.vercel.app/v1/subscription/stripe-webhook/google"
-  BACKEND_URL = "https://uffai-git-main-web-central.vercel.app/v1/subscription/stripe-webhook";
+  FRONT_END_URL_GOOGLE_PARAM = "https://uffai.vercel.app/v1/subscription/stripe-webhook/google"
+  BACKEND_URL = "https://uffai.vercel.app/v1/subscription/stripe-webhook";
 
 }
 
