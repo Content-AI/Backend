@@ -150,15 +150,15 @@ def generate_otp_by_email(request):
         this is for 14 days trail to see the if it will be valid or not
     '''
 
-    if match:
-        pass
-        domain = match.group(1)
-        if is_domain_up(domain):
-            pass
-        else:
-            return Response({"detail":"This type of email isn't accepted"},status=400)
-    else:
-        return Response({"detail":"Invalid email address"},status=400)
+    # if match:
+    #     pass
+    #     domain = match.group(1)
+    #     if is_domain_up(domain):
+    #         pass
+    #     else:
+    #         return Response({"detail":"This type of email isn't accepted"},status=400)
+    # else:
+    #     return Response({"detail":"Invalid email address"},status=400)
 
 
     digits = [i for i in range(0, 10)]
@@ -249,22 +249,22 @@ def generate_otp_by_email(request):
             browser_details=str(request.META.get('HTTP_USER_AGENT'))
             thread = threading.Thread(target=send_otp_email, args=(email, random_str,browser_details, request_ip))
             thread.start()
-            # subject = 'Your One-Time Password'
-            # template_name = 'otp_email.html'
-            # try:
-            #     name_for_email = user.first_name
-            # except:
-            #     name_for_email=email_name
-            # context = {'otp': str(random_str),'name':str(name_for_email),'client_ip':str(get_client_ip(request)),'browser':str(request.META.get('HTTP_USER_AGENT'))}
-            # email_content = render_to_string(template_name, context)
-            # send_mail(
-            #     subject,
-            #     email_content,
-            #     'test@gmail.com',
-            #     [email],
-            #     html_message=email_content,
-            #     fail_silently=False
-            # )
+            subject = 'Your One-Time Password'
+            template_name = 'otp_email.html'
+            try:
+                name_for_email = user.first_name
+            except:
+                name_for_email=email_name
+            context = {'otp': str(random_str),'name':str(name_for_email),'client_ip':str(get_client_ip(request)),'browser':str(request.META.get('HTTP_USER_AGENT'))}
+            email_content = render_to_string(template_name, context)
+            send_mail(
+                subject,
+                email_content,
+                'test@gmail.com',
+                [email],
+                html_message=email_content,
+                fail_silently=False
+            )
         except Exception as e:
             print(str(e))
             pass

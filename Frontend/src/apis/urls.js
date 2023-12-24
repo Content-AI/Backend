@@ -1,5 +1,5 @@
-// const local = true
-const local=false
+const local = true
+// const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
