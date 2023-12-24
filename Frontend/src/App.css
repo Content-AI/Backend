@@ -169,37 +169,3 @@ h6 {
   color: var(--secondary-text-color);
 }
 
-
-
-
-
-
-
-
-/* the editor css when click + for editing */
-
-
-/* Original CSS without .ce-popover */
-.show_popup_above_this_div {
-  position: relative;
-  z-index: 1000;
-}
-
-/* Modified CSS for the popup when the body has the 'popup-open' class */
-body.popup-open .ce-popover {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1001; /* Higher than the z-index of the specified div */
-}
-
-@media only screen and (max-width: 767px) {
-  body.popup-open .ce-popover {
-    top: calc(50% - 50px) !important; /* Adjust the value based on your design */
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-  }
-}
-
-

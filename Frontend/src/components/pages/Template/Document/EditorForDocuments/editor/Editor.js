@@ -141,16 +141,17 @@ export default function Editor({ data, setData }) {
         const targetBlock =
             document.getElementsByClassName("ce-block")[activeIndex],
           holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
-          
-          if (holder.innerHTML === "") {
-            targetBlock.classList.remove("active");
-            return;
-          }
-            setCurrentQuestion(holder.innerHTML);
-            targetBlock.classList.remove("active");
-            targetBlock.classList.add("loading");
-            holder.innerHTML = "...";
-            holder.focus();
+
+        if (holder.innerHTML === "") {
+          targetBlock.classList.remove("active");
+          return;
+        }
+
+        setCurrentQuestion(holder.innerHTML);
+        targetBlock.classList.remove("active");
+        targetBlock.classList.add("loading");
+        holder.innerHTML = "...";
+        holder.focus();
       }
     };
 

@@ -19,8 +19,8 @@ SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232
 # use_db_live="local"
 use_db_live="postgres"
 
-# pro=True
-pro=False
+pro=True
+# pro=False
 
 # stripe_production=True
 stripe_production=False
@@ -242,10 +242,12 @@ if pro:
     CORS_ALLOWED_ORIGINS = [
         'https://stripe.com',
         'https://app.uffai.com',
+        'https://uffai-git-main-web-central.vercel.app'
     ]
     CORS_ALLOWED_ORIGIN_REGEXES = [
         'https://stripe.com',
         'https://app.uffai.com',
+        'https://uffai-git-main-web-central.vercel.app'
     ]
 else:
     CORS_ALLOW_CREDENTIALS = True
