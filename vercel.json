@@ -21,7 +21,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "versel_deploymet/wsgi.py"
+        "dest": "core/wsgi.py"
       }
     ]
   }
