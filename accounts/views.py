@@ -150,15 +150,15 @@ def generate_otp_by_email(request):
         this is for 14 days trail to see the if it will be valid or not
     '''
 
-    # if match:
-    #     pass
-    #     domain = match.group(1)
-    #     if is_domain_up(domain):
-    #         pass
-    #     else:
-    #         return Response({"detail":"This type of email isn't accepted"},status=400)
-    # else:
-    #     return Response({"detail":"Invalid email address"},status=400)
+    if match:
+        pass
+        domain = match.group(1)
+        if is_domain_up(domain):
+            pass
+        else:
+            return Response({"detail":"This type of email isn't accepted"},status=400)
+    else:
+        return Response({"detail":"Invalid email address"},status=400)
 
 
     digits = [i for i in range(0, 10)]

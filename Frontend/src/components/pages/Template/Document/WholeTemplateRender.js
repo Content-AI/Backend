@@ -133,9 +133,6 @@ const WholeTemplateRender = ({template_data}) => {
                 </ul>
             </li>
         </ul>
-
-
-        
         </div>
     </>
   )

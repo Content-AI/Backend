@@ -1,5 +1,5 @@
-const local = true
-// const local=false
+// const local = true
+const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -24,6 +24,12 @@ if (local == true) {
 
   FRONT_END_URL_GOOGLE_PARAM = "https://app.uffai.com/google"
   BACKEND_URL = "https://app.uffai.com";
+
+  // FRONT_END_URL = "https://uffai.vercel.app/v1/subscription/stripe-webhook/"
+  // FRONT_END_URL_LINKEDIN = "https://uffai.vercel.app/v1/subscription/stripe-webhook"
+
+  // FRONT_END_URL_GOOGLE_PARAM = "https://uffai.vercel.app/v1/subscription/stripe-webhook/google"
+  // BACKEND_URL = "https://uffai.vercel.app/v1/subscription/stripe-webhook";
 
 }
 

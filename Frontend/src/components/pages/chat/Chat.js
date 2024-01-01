@@ -1875,44 +1875,38 @@ useEffect(()=>{
                     maxWidth={"lg"}
                     className=" rounded-lg max-w-[1088px] mx-auto"
                   >
-
-                  
                     <DialogContent
                       className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500"
                     >
-
-                      <div className="flex flex-col md:flex-row w-full items-start justify-start">
-
-                          <h3 className="w-52 text-xl font-bold">Prompts</h3>
-
-                          <div className="relative w-full text-grey-600 focus-within:text-grey-400">
-                            <ChatIconDialogF/>
-                            <input
-                              type="search"
-                              className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
-                              placeholder='Try "Sales" or "Email"'
-                              autoComplete="off"
-                              data-hj-allow="true"
-                              value={search_chat_template} // Use the search_chat_template value here
-                              onChange={handleChange}
-                            />
-                          </div>
+                      <div className="mb-4 pr-12 flex w-full items-center justify-start">
+                        <h3 className="w-52 text-xl font-bold">Prompts</h3>
+                        <div className="relative w-full text-grey-600 focus-within:text-grey-400">
+                          <ChatIconDialogF/>
+                          <input
+                            type="search"
+                            className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
+                            placeholder='Try "Sales" or "Email"'
+                            autoComplete="off"
+                            data-hj-allow="true"
+                            value={search_chat_template} // Use the search_chat_template value here
+                            onChange={handleChange}
+                          />
+                        </div>
 
 
-                          <div
-                            onClick={handleClose}
-                            className="absolute top-0 right-0 p-8 cursor-pointer duration-300 hover:opacity-70"
-                          >
-                            <GrClose size={16} />
-                          </div>
+                        <div
+                          onClick={handleClose}
+                          className="absolute top-0 right-0 p-8 cursor-pointer duration-300 hover:opacity-70"
+                        >
+                          <GrClose size={16} />
+                        </div>
 
                       </div>
 
                       
-                      <div className="flex flex-col md:flex-row w-full items-start justify-start">
-
+                      <div className="flex w-full items-start justify-start">
                         {/* =================the first template name================= */}
-                        <div className="w-full md:w-3/12 h-[500px] self-stretch overflow-scroll pt-3 pr-1 mb-4 md:mb-0 full">
+                        <div className="w-3/12 h-[500px] self-stretch overflow-scroll  pt-3 pr-1">
                         
                           <div
                             className="dark:hover:bg-slate-500 cursor-pointer truncate rounded-md p-3 capitalize hover:bg-blue-900 "
@@ -1958,7 +1952,7 @@ useEffect(()=>{
 
                         {show_only_custom ? (
                           <>
-                          <div className="w-full md:w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3 mb-4 md:mb-0">
+                            <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3 ">
                               {show_create_input ? (
                                 <>
                                   <input
@@ -2197,10 +2191,7 @@ useEffect(()=>{
                         ) : (
                           <>
                             {/* =================the second layer template name================= */}
-                            
-                            <div className="w-full md:w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3 mb-4 md:mb-0">
-
-
+                            <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
                               {second_layer_title && (
                                 <>
                                   {Chat_Template_Title.length > 0 ? (
@@ -2236,9 +2227,7 @@ useEffect(()=>{
                         {show_only_custom ? (
                           <>
                             {show_create_input ? (
-                              
-                              <div className="w-full md:w-5/12 h-[500px] dark:text-white dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-
+                              <div className="w-5/12 h-[500px] dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
                                 <div className="dark:bg-gray-800 relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
                                   <div className="dark:bg-gray-800 editor-textarea h-full w-full">
                                     <div
@@ -2276,8 +2265,7 @@ useEffect(()=>{
                               <>
                                 {/* ====================Third layer which is value of chat template============ */}
 
-                                <div className="w-full md:w-5/12 h-[500px] dark:text-white dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-
+                                <div className="w-5/12 h-[500px] dark:text-white dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
                                   <div className="relative dark:text-white dark:bg-gray-800 w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
                                     <span className="dark:text-white dark:bg-gray-800 text-red-500 font-semibold text-[20px] sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
                                       Edit or Use ( Template )
@@ -2314,9 +2302,7 @@ useEffect(()=>{
                                       </div>
                                     </div>
                                   </div>
-
                                 </div>
-
                                 {/* ====================Third layer which is value of chat template End========= */}
                               </>
                             )}
@@ -2325,10 +2311,8 @@ useEffect(()=>{
                           <>
                             {/* ====================Third layer which is value of chat template============ */}
 
-                            <div className="w-full md:w-5/12 h-[500px] dark:text-white dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-                            
+                            <div className="w-5/12 h-[500px] dark:text-white dark:bg-gray-800 flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
                               <div className="dark:bg-gray-800 relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-
                                 <span className="dark:bg-gray-800 text-red-500 sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
                                   PREVIEW (Template)
                                   {/* <TooltipInfo text="Use this template in chat" /> */}
@@ -2358,20 +2342,12 @@ useEffect(()=>{
                                   </div>
                                 </div>
                               </div>
-
                             </div>
-                            
                             {/* ====================Third layer which is value of chat template End========= */}
                           </>
                         )}
                       </div>
-
-
-
-                      
                     </DialogContent>
-
-
                     <DialogActions
                       className="dark:bg-gray-800"
                     >
@@ -2435,11 +2411,7 @@ useEffect(()=>{
                         </button>
                       )}
                     </DialogActions>
-
-
                   </Dialog>
-
-
 
                   <Popover
                     id={id}
@@ -2457,8 +2429,7 @@ useEffect(()=>{
                     className="shadow-none"
                   >
                   
-              <div className="dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 dark:rounded-none w-[300px] p-3 md:w-[800px] border border-grey-300 bg-white shadow-lg md:left-0 rounded-xl overflow-y-auto overscroll-contain">
-                  
+                  <div className="dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500  dark:rounded-none w-full md:w-[800px] border border-grey-300 bg-white shadow-lg md:left-0 rounded-xl">
               <div>
                 <div className="px-4 py-5">
                   <div className="space-y-1.5 w-full">
@@ -2562,14 +2533,10 @@ useEffect(()=>{
                   </span>
                 </button>
               </div>
-                  </div>
+            </div>
 
                     
                   </Popover>
-
-
-
-                  
             {/* =====================Browse prompts ============ */}
 
 

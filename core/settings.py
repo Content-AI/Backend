@@ -19,11 +19,11 @@ SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232
 # use_db_live="local"
 use_db_live="postgres"
 
-# pro=True
-pro=False
+pro=True
+# pro=False
 
-# stripe_production=True
-stripe_production=False
+stripe_production=True
+# stripe_production=False
 
 if pro:
     DEBUG = False
@@ -90,7 +90,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
 
@@ -153,13 +153,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-POSTGRES_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-POSTGRES_PRISMA_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
-POSTGRES_URL_NON_POOLING="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-POSTGRES_USER="default"
-POSTGRES_HOST="ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com"
-POSTGRES_PASSWORD="Fs3D8omYPGuv"
-POSTGRES_DATABASE="verceldb"
+# POSTGRES_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+# POSTGRES_PRISMA_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
+# POSTGRES_URL_NON_POOLING="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+# POSTGRES_USER="default"
+# POSTGRES_HOST="ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com"
+# POSTGRES_PASSWORD="Fs3D8omYPGuv"
+# POSTGRES_DATABASE="verceldb"
 
 if use_db_live=="local":
     # test mode db for local server
@@ -170,26 +170,26 @@ if use_db_live=="local":
             }
     }
 elif use_db_live=="postgres":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': POSTGRES_DATABASE,
-            'USER': POSTGRES_USER,
-            'PASSWORD': POSTGRES_PASSWORD,
-            'HOST': POSTGRES_HOST,
-            'PORT': '5432',
-        }
-    }
     # DATABASES = {
     #     'default': {
     #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': 'postgres',
-    #         'USER': 'dbmasteruser',
-    #         'PASSWORD': '.2aNr<[7)|k0sNgI(.09vgic>FMza[mY',
-    #         'HOST': 'ls-dd6ac7a7fde7febcdd96494f2a722935717608ca.cchckxmlw6np.ap-south-1.rds.amazonaws.com',  # or your database server address
+    #         'NAME': POSTGRES_DATABASE,
+    #         'USER': POSTGRES_USER,
+    #         'PASSWORD': POSTGRES_PASSWORD,
+    #         'HOST': POSTGRES_HOST,
     #         'PORT': '5432',
     #     }
     # }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'dbmasteruser',
+            'PASSWORD': '.2aNr<[7)|k0sNgI(.09vgic>FMza[mY',
+            'HOST': 'ls-dd6ac7a7fde7febcdd96494f2a722935717608ca.cchckxmlw6np.ap-south-1.rds.amazonaws.com',  # or your database server address
+            'PORT': '5432',
+        }
+    }
 
 
 
@@ -483,6 +483,18 @@ CKEDITOR_CONFIGS = {
 
 
 
+EMAIL_BACKEND = 'post_office.EmailBackend'
+
+POST_OFFICE = {
+    'BACKENDS': {
+        'default': 'django_ses.SESBackend',
+    },
+    'DEFAULT_PRIORITY': 'now',
+}
+
+AWS_SES_REGION_NAME ='us-east-1'
+AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
+AWS_SES_CONFIGURATION_SET = None
 
 
 AWS_ACCESS_KEY_ID = 'AKIA23ZBBWRD5BVZDBM2'
