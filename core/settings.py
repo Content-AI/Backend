@@ -90,7 +90,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
 
@@ -153,13 +153,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-# POSTGRES_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-# POSTGRES_PRISMA_URL="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
-# POSTGRES_URL_NON_POOLING="postgres://default:Fs3D8omYPGuv@ep-fancy-limit-54621384.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-# POSTGRES_USER="default"
-# POSTGRES_HOST="ep-fancy-limit-54621384-pooler.us-east-1.postgres.vercel-storage.com"
-# POSTGRES_PASSWORD="Fs3D8omYPGuv"
-# POSTGRES_DATABASE="verceldb"
 
 if use_db_live=="local":
     # test mode db for local server
@@ -170,23 +163,13 @@ if use_db_live=="local":
             }
     }
 elif use_db_live=="postgres":
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': POSTGRES_DATABASE,
-    #         'USER': POSTGRES_USER,
-    #         'PASSWORD': POSTGRES_PASSWORD,
-    #         'HOST': POSTGRES_HOST,
-    #         'PORT': '5432',
-    #     }
-    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'postgres',
             'USER': 'dbmasteruser',
-            'PASSWORD': '.2aNr<[7)|k0sNgI(.09vgic>FMza[mY',
-            'HOST': 'ls-dd6ac7a7fde7febcdd96494f2a722935717608ca.cchckxmlw6np.ap-south-1.rds.amazonaws.com',  # or your database server address
+            'PASSWORD': 'Gm*[}4qq8:oj3U=%3DEsCIfATyo!Q4DU',
+            'HOST': 'ls-d8d5fe5c5aada30236e9d9f3b2c27390e73b16d9.cpg4esio8jey.ap-southeast-2.rds.amazonaws.com',
             'PORT': '5432',
         }
     }
@@ -507,22 +490,6 @@ AWS_DEFAULT_ACL =  None
 AWS_S3_VERITY = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_CUSTOM_DOMAIN="aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com"
-
-
-# EMAIL_HOST_USER = "AKIA23ZBBWRDZKLDLBUP"
-# EMAIL_HOST_PASSWORD = "BPusYLqrQXacd/gt1e4gMtxOff7qxGRxRzWSnpl/E9EV"
-
-
-# EMAIL_BACKEND = 'django_ses.SESBackend'  # Use the Django SES backend
-# # Amazon SES settings
-# AWS_SES_REGION_NAME = 'us-east-1'  # Replace with the AWS SES region you are using
-# AWS_SES_REGION_ENDPOINT = 'email-smtp.us-east-1.amazonaws.com'
-# # Optional settings
-# # DEFAULT_FROM_EMAIL = 'your-sender-email@example.com'
-# # SERVER_EMAIL = 'your-sender-email@example.com'
-# DEFAULT_FROM_EMAIL = 'SASS'
-
-
 
 
 

@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
-        target: "/home/ubuntu/ai-aws"
+        target: "/home/ubuntu/Backend"
         debug: true
 
     - name: Run deploy.sh
@@ -30,6 +30,6 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/ubuntu/ai-aws
+          cd /home/ubuntu/Backend
           chmod +x deploy.sh
           ./deploy.sh
