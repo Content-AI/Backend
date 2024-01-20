@@ -64,6 +64,7 @@ url_patterns_for_auth = [
 ]
 
 
+
 urlpatterns = [
     path(f'{version_api}/chat/', include('chat.urls')),
     path(f'{version_api}/template/', include('template.urls')),
@@ -76,8 +77,9 @@ urlpatterns = [
     path(f'{version_api}/team_members/', include('team_members.urls')),
     path(f'{version_api}/workflow/', include('workflow.urls')),
     path(f'{version_api}/business_plan/', include('business_plan.urls')),
+    path(f'{version_api}/create_advertisement/', include('create_advertisement.urls')),
 ]
 
 urlpatterns = urlpatterns +url_patterns_for_auth+common_url_patterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]
+# urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

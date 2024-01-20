@@ -30,7 +30,7 @@ urlpatterns = [
     path('generate/auth_token/', views.login_user_using_token, name='login_user_using_token'),
 
     path('survey/data/', views.survey_data, name='survey_data'),
-    
+
     path('total_account/', views.total_account, name='total_account'),
     path('acc/', views.track_visitor, name='track-visitor'),
     path('visitor_data/', views.visitor_data, name='visitor_data'),

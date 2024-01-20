@@ -330,206 +330,223 @@ def stripe_webhook(request):
         # Invalid signature
         return JsonResponse({'error': 'Invalid signature'}, status=400)
 
-
-    # Handle the event based on its type
-    if event.type == 'customer.subscription.updated':
+    try:
         customer_stripe_id=request.data["data"]["object"]["customer"]
         instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-        # try:
-        # print("===============customer.subscription.updated=================")
-        # print(request.data)
-        plan=None
-        annually_monthly=None
-        if request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_starter_production:
-            print("annually starter")
-            instance.restrict_user = False
-            instance.subscription_type="annually"
-            instance.plan="starter"
-            instance.status="active"
-            # instance = Subscription.objects.get(customer_stripe_id=customer.id)
-            user_manipulate_token=instance.user_id
-            # ================add days==========================================
-            instance.started_at = timezone.now()
-            end_at = instance.started_at + timedelta(days=365)
-            instance.end_at = end_at
-            print("annually starter")
 
-            # save token for version
-            generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-            generate_instance.words=total_words_for_premium
-            generate_instance.save()
-
-
-
-            # add the team member but if there is 3 or more then 3 then do nothing
-            customer_stripe_id=request.data["data"]["object"]["customer"]
-            cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-            wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
-            TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=1)
-
-            # ================add days==========================================
-            instance.subscription_stripe_id=request.data["data"]["object"]["id"]
-
-        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_starter_production:
-            print("monthly starter")
-            instance.subscription_type="monthly"
-            instance.plan="starter"
-            instance.status="active"
-            # ================add days==========================================
-            instance.started_at = timezone.now()
-            end_at = instance.started_at + timedelta(days=30)
-            instance.end_at = end_at
-
-            user_manipulate_token=instance.user_id
-            # save token for trail version
-            generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-            generate_instance.words=total_words_for_premium
-            generate_instance.save()
-
-            # add the team member but if there is 3 or more then 3 then do nothing
-            customer_stripe_id=request.data["data"]["object"]["customer"]
-            cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-            wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
-            TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=1)
-
-            # ================add days==========================================
-            instance.subscription_stripe_id=request.data["data"]["object"]["id"]        
-        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_premium_production:
-            print("monthly premium")
-            instance.subscription_type="monthly"
-            instance.plan="premium"
-            instance.status="active"
-            # ================add days==========================================
-            instance.started_at = timezone.now()
-            end_at = instance.started_at + timedelta(days=30)
-            instance.end_at = end_at
-
-            user_manipulate_token=instance.user_id
-            # save token for trail version
-            generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-            generate_instance.words=total_words_for_premium
-            generate_instance.save()
-
-            # add the team member but if there is 3 or more then 3 then do nothing
-            customer_stripe_id=request.data["data"]["object"]["customer"]
-            cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-            wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
-            TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=3)
-
-
-            # ================add days==========================================
-            instance.subscription_stripe_id=request.data["data"]["object"]["id"]
-        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_premium_production:
-            print("yearly premium")
+        if request.data['data']['object']['status'] == "trialing":
+            # Handle trialing subscription
+            instance.restrict_user = True
             instance.subscription_type="annually"
             instance.plan="premium"
-            instance.status="active"
-            # ================add days==========================================
-            instance.started_at = timezone.now()
-            end_at = instance.started_at + timedelta(days=365)
-            instance.end_at = end_at
-
+            instance.status="trial"
             user_manipulate_token=instance.user_id
-            # save token for trail version
-            generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-            generate_instance.words=total_words_for_premium
-            generate_instance.save()
-            # ================add days==========================================
-            instance.subscription_stripe_id=request.data["data"]["object"]["id"]
-        instance.save()
-        if request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==per_seat_product:
+            return JsonResponse({'status': 'Trail Ends'}, status=200)
 
-            # try:
-            # Extracting the unit_amount and quantity from the JSON
-            unit_amount_in_cents = request.data["data"]["object"]["items"]["data"][0]["price"]["unit_amount"]
-            quantity = request.data["data"]["object"]["items"]["data"][0]["quantity"]
-            # Calculating the total seats from stripe and team_member_no models
-            wrk_ins=Workspace.objects.get(admin_user_of_workspace=instance.user_id)
-            ins_team_member_no=TeamMemberTeamNumber.objects.get(Workspace_Id=wrk_ins)
-            ins_team_member_no.no_of_member=int(ins_team_member_no.no_of_member)+int(quantity)
-            ins_team_member_no.save()
+        else:
+            # Handle the event based on its type
+            if event.type == 'customer.subscription.updated':
+                customer_stripe_id=request.data["data"]["object"]["customer"]
+                instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                # try:
+                # print("===============customer.subscription.updated=================")
+                # print(request.data)
+                plan=None
+                annually_monthly=None
 
-            instance_sub_user = Subscription.objects.get(user_id=instance.user_id)
-            instance_sub_user.subscription_team_stripe_id=request.data["data"]["object"]["id"]
-            instance_sub_user.save()
-            
-            #     print("============customer.subscription.updated====================")
-            # except Exception as e:
-            #     print(str(e))
-    else:
-        if event.type == 'customer.subscription.created':
-            # try:
-            # print("====================customer.subscription.created==========================")
-            # print(request.data)
-            # print("======================customer.subscription.created========================")
-            customer_stripe_id=request.data["data"]["object"]["customer"]
-            instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-            if instance.status=="trial":
 
-                # get the data of plan from strip production id
                 if request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_starter_production:
+                    print("annually starter")
+                    instance.restrict_user = False
                     instance.subscription_type="annually"
                     instance.plan="starter"
+                    instance.status="active"
+                    # instance = Subscription.objects.get(customer_stripe_id=customer.id)
+                    user_manipulate_token=instance.user_id
+                    # ================add days==========================================
+                    instance.started_at = timezone.now()
+                    end_at = instance.started_at + timedelta(days=365)
+                    instance.end_at = end_at
+                    print("annually starter")
+
+                    # save token for version
+                    generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                    generate_instance.words=total_words_for_premium
+                    generate_instance.save()
+
+
+
+                    # add the team member but if there is 3 or more then 3 then do nothing
+                    customer_stripe_id=request.data["data"]["object"]["customer"]
+                    cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                    wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
+                    TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=1)
+
+                    # ================add days==========================================
+                    instance.subscription_stripe_id=request.data["data"]["object"]["id"]
+
                 elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_starter_production:
+                    print("monthly starter")
                     instance.subscription_type="monthly"
                     instance.plan="starter"
+                    instance.status="active"
+                    # ================add days==========================================
+                    instance.started_at = timezone.now()
+                    end_at = instance.started_at + timedelta(days=30)
+                    instance.end_at = end_at
+
+                    user_manipulate_token=instance.user_id
+                    # save token for trail version
+                    generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                    generate_instance.words=total_words_for_premium
+                    generate_instance.save()
+
+                    # add the team member but if there is 3 or more then 3 then do nothing
+                    customer_stripe_id=request.data["data"]["object"]["customer"]
+                    cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                    wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
+                    TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=1)
+
+                    # ================add days==========================================
+                    instance.subscription_stripe_id=request.data["data"]["object"]["id"]        
                 elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_premium_production:
+                    print("monthly premium")
                     instance.subscription_type="monthly"
                     instance.plan="premium"
+                    instance.status="active"
+                    # ================add days==========================================
+                    instance.started_at = timezone.now()
+                    end_at = instance.started_at + timedelta(days=30)
+                    instance.end_at = end_at
+
+                    user_manipulate_token=instance.user_id
+                    # save token for trail version
+                    generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                    generate_instance.words=total_words_for_premium
+                    generate_instance.save()
+
+                    # add the team member but if there is 3 or more then 3 then do nothing
+                    customer_stripe_id=request.data["data"]["object"]["customer"]
+                    cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                    wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
+                    TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins,no_of_member=3)
+
+
+                    # ================add days==========================================
+                    instance.subscription_stripe_id=request.data["data"]["object"]["id"]
                 elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_premium_production:
+                    print("yearly premium")
                     instance.subscription_type="annually"
                     instance.plan="premium"
-                instance.restrict_user = False
-                instance.subscription_stripe_id=request.data["data"]["object"]["id"]
-                user_manipulate_token=instance.user_id
+                    instance.status="active"
+                    # ================add days==========================================
+                    instance.started_at = timezone.now()
+                    end_at = instance.started_at + timedelta(days=365)
+                    instance.end_at = end_at
+
+                    user_manipulate_token=instance.user_id
+                    # save token for trail version
+                    generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                    generate_instance.words=total_words_for_premium
+                    generate_instance.save()
+                    # ================add days==========================================
+                    instance.subscription_stripe_id=request.data["data"]["object"]["id"]
                 instance.save()
-                product_id = request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]
+                if request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==per_seat_product:
 
-                # save token for trail version
-                generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-                generate_instance.words=total_words_for_trail
-                generate_instance.save()
+                    # try:
+                    # Extracting the unit_amount and quantity from the JSON
+                    unit_amount_in_cents = request.data["data"]["object"]["items"]["data"][0]["price"]["unit_amount"]
+                    quantity = request.data["data"]["object"]["items"]["data"][0]["quantity"]
+                    # Calculating the total seats from stripe and team_member_no models
+                    wrk_ins=Workspace.objects.get(admin_user_of_workspace=instance.user_id)
+                    ins_team_member_no=TeamMemberTeamNumber.objects.get(Workspace_Id=wrk_ins)
+                    ins_team_member_no.no_of_member=int(ins_team_member_no.no_of_member)+int(quantity)
+                    ins_team_member_no.save()
 
-                # get the subscription data as premium or not if premium then add 3 members.
-                cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-                wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
-                try:
-                    if cus_stripe_ins.plan=="premium":
-                        count_team_member=TeamMemberTeamNumber.objects.filter(Workspace_Id=wrk_stripe_ins).exists()
-                        if count_team_member:
-                            check_count_team_member=TeamMemberTeamNumber.objects.filter(Workspace_Id=wrk_stripe_ins).values('no_of_member')
-                            team_member_count = check_count_team_member[0]["no_of_member"]
-                            if team_member_count < 3:
-                                no_of_member = 1 if subscription_data['data']['object']['status'] == 'trialing' else 3
-                                TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins, no_of_member=no_of_member)
-                except Exception as e:
-                    # print("===error==")
-                    # print(str(e))
-                    # print("===error==")
-                    pass
-            # except:
-            #     pass
-    if event.type == 'customer.subscription.deleted':
-            # print("====================customer.subscription.deleted==========================")
-            # # print(request.data)
-            # print("======================customer.subscription.deleted========================")
-            customer_stripe_id=request.data["data"]["object"]["customer"]
-            instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
-            if request.data["data"]["object"]["trial_start"] is None:
-                pass
+                    instance_sub_user = Subscription.objects.get(user_id=instance.user_id)
+                    instance_sub_user.subscription_team_stripe_id=request.data["data"]["object"]["id"]
+                    instance_sub_user.save()
+                    
+                    #     print("============customer.subscription.updated====================")
+                    # except Exception as e:
+                    #     print(str(e))
             else:
-                instance.status="trial"
-                instance.end_at=None
-                instance.subscription_stripe_id=request.data["data"]["object"]["id"]
-                user_manipulate_token=instance.user_id
-                instance.save()
-                # save token for trail version
-                generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
-                generate_instance.words=total_words_for_trail
-                generate_instance.save()
+                if event.type == 'customer.subscription.created':
+                    # try:
+                    # print("====================customer.subscription.created==========================")
+                    # print(request.data)
+                    # print("======================customer.subscription.created========================")
+                    customer_stripe_id=request.data["data"]["object"]["customer"]
+                    instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                    if instance.status=="trial":
 
+                        # get the data of plan from strip production id
+                        if request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_starter_production:
+                            instance.subscription_type="annually"
+                            instance.plan="starter"
+                        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_starter_production:
+                            instance.subscription_type="monthly"
+                            instance.plan="starter"
+                        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==monthly_premium_production:
+                            instance.subscription_type="monthly"
+                            instance.plan="premium"
+                        elif request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]==annually_premium_production:
+                            instance.subscription_type="annually"
+                            instance.plan="premium"
+                        instance.restrict_user = False
+                        instance.subscription_stripe_id=request.data["data"]["object"]["id"]
+                        user_manipulate_token=instance.user_id
+                        instance.save()
+                        product_id = request.data["data"]["object"]["items"]["data"][0]["plan"]["product"]
 
-    return JsonResponse({'status': 'success'}, status=200)
+                        # save token for trail version
+                        generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                        generate_instance.words=total_words_for_trail
+                        generate_instance.save()
+
+                        # get the subscription data as premium or not if premium then add 3 members.
+                        cus_stripe_ins=Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                        wrk_stripe_ins=WorkspaceModal.objects.get(admin_user_of_workspace=cus_stripe_ins.user_id)
+                        try:
+                            if cus_stripe_ins.plan=="premium":
+                                count_team_member=TeamMemberTeamNumber.objects.filter(Workspace_Id=wrk_stripe_ins).exists()
+                                if count_team_member:
+                                    check_count_team_member=TeamMemberTeamNumber.objects.filter(Workspace_Id=wrk_stripe_ins).values('no_of_member')
+                                    team_member_count = check_count_team_member[0]["no_of_member"]
+                                    if team_member_count < 3:
+                                        no_of_member = 1 if subscription_data['data']['object']['status'] == 'trialing' else 3
+                                        TeamMemberTeamNumber.objects.create(Workspace_Id=wrk_stripe_ins, no_of_member=no_of_member)
+                        except Exception as e:
+                            # print("===error==")
+                            # print(str(e))
+                            # print("===error==")
+                            pass
+                    # except:
+                    #     pass
+            if event.type == 'customer.subscription.deleted':
+                # print("====================customer.subscription.deleted==========================")
+                # # print(request.data)
+                # print("======================customer.subscription.deleted========================")
+                customer_stripe_id=request.data["data"]["object"]["customer"]
+                instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
+                if request.data["data"]["object"]["trial_start"] is None:
+                    pass
+                else:
+                    instance.status="trial"
+                    instance.end_at=None
+                    instance.subscription_stripe_id=request.data["data"]["object"]["id"]
+                    user_manipulate_token=instance.user_id
+                    instance.save()
+                    # save token for trail version
+                    generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
+                    generate_instance.words=total_words_for_trail
+                    generate_instance.save()
+
+        return JsonResponse({'status': 'success'}, status=200)
+    except:
+        return JsonResponse({'status': str(e)}, status=400)
+
 
 
 from subscriptions.check_subscription import restrict_user

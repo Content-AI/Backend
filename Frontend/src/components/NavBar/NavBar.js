@@ -274,7 +274,8 @@ const Navbar = () => {
                     </>
                   }
 
-                <DarkMode/>
+                {/* <DarkMode/> */}
+                
                 </div>
 
 

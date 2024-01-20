@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "business_plan",
     "hubspot_data",
     "api_docs",
+    "create_advertisement",
 ]
 
 
@@ -90,7 +91,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
 
@@ -162,6 +163,7 @@ if use_db_live=="local":
                 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
             }
     }
+
 elif use_db_live=="postgres":
     DATABASES = {
         'default': {
@@ -480,16 +482,28 @@ AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
 AWS_SES_CONFIGURATION_SET = None
 
 
-AWS_ACCESS_KEY_ID = 'AKIA23ZBBWRD5BVZDBM2'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'aiprojectfilestorage'
+# AWS_ACCESS_KEY_ID = 'AKIA23ZBBWRD5BVZDBM2'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'aiprojectfilestorage'
+# AWS_S3_SIGNATURE_NAME = 's3v4',
+# AWS_S3_REGION_NAME = 'ap-southeast-2'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL =  None
+# AWS_S3_VERITY = True
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_S3_CUSTOM_DOMAIN="aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com"
+
+
+AWS_ACCESS_KEY_ID = 'AKIAVRUVSZ4K26Q5BVWB'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'uffiafilestorage'
 AWS_S3_SIGNATURE_NAME = 's3v4',
-AWS_S3_REGION_NAME = 'ap-southeast-2'
+AWS_S3_REGION_NAME = 'us-east-1'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL =  None
 AWS_S3_VERITY = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_CUSTOM_DOMAIN="aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com"
+AWS_S3_CUSTOM_DOMAIN="uffiafilestorage.s3.amazonaws.com"
 
 
 

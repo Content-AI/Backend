@@ -244,12 +244,11 @@ useEffect(()=>{
           {imp_manaully.map((data,index)=>{
             return (
 
-                <div className=" flex flex-col cursor-pointer " title={data["title"]}>
+                <div className="flex flex-col cursor-pointer " title={data["title"]}>
                   
-                    <div className="dark:bg-slate-700 dark:hover:bg-gray-600 hover:bg-gray-100 dark:border-slate-500 border border-border p-6 rounded-lg ">
-
-                      <div className="flex">
-                      <div>
+                <div className="dark:bg-slate-700 flex dark:hover:bg-gray-600 hover:bg-gray-100 dark:border-slate-500 border border-border p-6 rounded-lg">
+                    <div className="flex justify-between w-full">
+                      <div className="right">
                         <div className="flex">
                           <div>
                             <img src={data["img"]} alt={data["title"]} className="w-6 h-6" />
@@ -260,34 +259,33 @@ useEffect(()=>{
                         </div>
 
                         <div>
-                            <p className="text-sm min-h-[62px] mt-8">
-                              {data["description"]}
-                            </p>
-                         </div>
+                          <p className="text-sm min-h-[62px] mt-8">
+                            {data["description"]}
+                          </p>
+                        </div>
 
-
-                         {subscriptions_details &&
-                            <>
-                              {subscriptions_details.user.status=="trial" && data["isPremium"]==true
+                        {subscriptions_details &&
+                          <>
+                            {subscriptions_details.user.status === "trial" && data["isPremium"] === true
                               ?
-                                <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
-                                onClick={()=>{
+                              <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                                onClick={() => {
                                   navigate("/settings/subscription_plan")
                                 }}>
-                                  Upgrade
-                                </button>
+                                Upgrade
+                              </button>
                               :
-                                <button className="text-white dark:text-gray-300 w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
-                                    onClick={()=>{
-                                      navigate(data["link"])
-                                    }}>
-                                      {data["title"]}
-                                </button>
-                              }
-
-                            </>
+                              <button className="text-white dark:text-gray-300 w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                                onClick={() => {
+                                  navigate(data["link"])
+                                }}>
+                                {data["title"]}
+                              </button>
                             }
-                   </div>
+                          </>
+                        }
+                      </div>
+
                       <div className="rounded-s-xl rounded-e-xl mb-3">
                         <img
                           src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
@@ -295,9 +293,11 @@ useEffect(()=>{
                           className="w-full h-full dark:opacity-60"
                         />
                       </div>
-                   </div>
+                    </div>
+                  </div>
 
-                   </div>
+
+                   
                 </div>
             )
           })}
@@ -320,7 +320,7 @@ useEffect(()=>{
               {imp_template.map((items, index) => {
                 return (
                   <>
-                    {index < 3 && <CardDoc {...items} key={"carddoc_" + index} />}
+                    <CardDoc {...items} key={"carddoc_" + index}/>
                   </>
                 );
               })}
