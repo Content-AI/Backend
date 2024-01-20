@@ -14,7 +14,7 @@ import os
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232i3asdfadsfdasf'
+SECRET_KEY = 'sf'
 
 # use_db_live="local"
 use_db_live="postgres"
@@ -90,7 +90,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
 
@@ -168,8 +168,8 @@ elif use_db_live=="postgres":
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'postgres',
             'USER': 'dbmasteruser',
-            'PASSWORD': 'Gm*[}4qq8:oj3U=%3DEsCIfATyo!Q4DU',
-            'HOST': 'ls-d8d5fe5c5aada30236e9d9f3b2c27390e73b16d9.cpg4esio8jey.ap-southeast-2.rds.amazonaws.com',
+            'PASSWORD': '',
+            'HOST': '',
             'PORT': '5432',
         }
     }
