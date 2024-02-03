@@ -16,11 +16,11 @@ import os
 
 SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232i3asdfadsfdasf'
 
-# use_db_live="local"
-use_db_live="postgres"
+use_db_live="local"
+# use_db_live="postgres"
 
-pro=True
-# pro=False
+# pro=True
+pro=False
 
 stripe_production=True
 # stripe_production=False
@@ -99,18 +99,18 @@ DEFAULT_FROM_EMAIL = 'SASS'
 
 
 REST_FRAMEWORK = {
-    #     'DEFAULT_PARSER_CLASSES': [
-    #     'rest_framework.parsers.JSONParser',
-    # ],
+        'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # 'DEFAULT_RENDERER_CLASSES': [
-    #     'rest_framework.renderers.JSONRenderer',
-    # ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
