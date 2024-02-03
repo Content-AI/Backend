@@ -96,18 +96,25 @@ def makeAPIRequest(ask_question_to_gpt):
     # =======old api request ===
 
 def ask_little_more(ask_question_to_gpt):
-
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=ask_question_to_gpt,
-        temperature=0.7,
-        max_tokens=500,
+    
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": ask_question_to_gpt}
+        ]
     )
 
-    generated_text = response.choices[0].text
-    count_token_data(generated_text) # send text only
-    resp_data = {"role": "system", "content": generated_text}
-    return resp_data
+    datetime_value = datetime.now(timezone.utc)
+    response['choices'][0]['message']["created_at"]=format_time_elapsed(datetime_value)
+    count_token_data(response['choices'][0]['message']['content'])
+    return response['choices'][0]['message']
+
+    # response = openai.Completion.create(engine="gpt-3.5-turbo",prompt=ask_question_to_gpt,temperature=0.7,max_tokens=500,)
+
+    # generated_text = response.choices[0].text
+    # count_token_data(generated_text)
+    # resp_data = {"role": "system", "content": generated_text}
+    # return resp_data
 
     # =======new api request ===
     # import requests

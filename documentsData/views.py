@@ -377,7 +377,6 @@ def doc_question(request):
     restrict_user_check = restrict_user_views(request.user)
 
     # restrict user if it's trail
-
     give_token_for_user=GenerateWordRestrictionForUser.objects.get(user=request.user)
     give_token_for_user=give_token_for_user.words
 
@@ -401,6 +400,8 @@ def doc_question(request):
             return Response(restriction_to_user,status=200)
     if restrict_user_check is False:
         return Response(restriction_to_user, status=400)
+    
+    
     try:
         response_data_from_api=ask_little_more(request.data.get('ask'))
     
