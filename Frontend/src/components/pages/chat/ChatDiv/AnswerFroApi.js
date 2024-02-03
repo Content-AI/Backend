@@ -18,7 +18,7 @@ const AnswerFroApi = (props) => {
         <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
         <img
             className="w-full h-full rounded-full"
-            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
+            src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/chat.png"
             alt="ChatBot"
         />
         </div>

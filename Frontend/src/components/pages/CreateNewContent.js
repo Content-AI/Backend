@@ -339,7 +339,7 @@ const create_blank_document = async() => {
                             >
                                 <span className="flex items-center space-x-3">
                                     {/* <ReacapBuildericon/> */}
-                                    <img className="w-8 h-8 dark:rounded-md" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png" />
+                                    <img className="w-8 h-8 dark:rounded-md" alt="Transcribe speech" src="https://uffiafilestorage.s3.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png" />
                                     <span className=" dark:text-gray-500  ext-slate-700 text-base font-semibold">Recap Builder</span>
                                     {/* <Premium /> */}
                                 </span>
@@ -354,7 +354,7 @@ const create_blank_document = async() => {
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
-                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Transcribe+speech.png" />
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://uffiafilestorage.s3.amazonaws.com/icons/Transcribe+speech.png" />
                                     <span className=" dark:text-gray-500  text-slate-700 text-base font-semibold">Transcribe speech.</span>
                                       <Premium/>
                                 </span>
@@ -370,7 +370,7 @@ const create_blank_document = async() => {
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
-                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/1_T3DPBTv.png" />
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://uffiafilestorage.s3.amazonaws.com/icons/1_T3DPBTv.png" />
                                     <span className=" dark:text-gray-500  text-slate-700 text-base font-semibold">One Shot Blog Post</span>
                                 </span>
                                 <span className="block dark:text-gray-500">Get the key bullet points from a piece of content.</span>
@@ -386,7 +386,7 @@ const create_blank_document = async() => {
                             
                                 <span className="flex items-center space-x-3">
                                     {/* <ArtIcon/> */}
-                                    <img className="w-8 h-8 dark:rounded-md" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png" />
+                                    <img className="w-8 h-8 dark:rounded-md" alt="Transcribe speech" src="https://uffiafilestorage.s3.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png" />
                                     <span className=" dark:text-gray-500  text-slate-700 text-base font-semibold">Art</span>
                                     <Premium />
                                 </span>

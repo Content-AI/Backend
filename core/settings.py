@@ -468,30 +468,18 @@ CKEDITOR_CONFIGS = {
 
 
 
-EMAIL_BACKEND = 'post_office.EmailBackend'
+# EMAIL_BACKEND = 'post_office.EmailBackend'
 
-POST_OFFICE = {
-    'BACKENDS': {
-        'default': 'django_ses.SESBackend',
-    },
-    'DEFAULT_PRIORITY': 'now',
-}
+# POST_OFFICE = {
+#     'BACKENDS': {
+#         'default': 'django_ses.SESBackend',
+#     },
+#     'DEFAULT_PRIORITY': 'now',
+# }
 
 AWS_SES_REGION_NAME ='us-east-1'
 AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
 AWS_SES_CONFIGURATION_SET = None
-
-
-# AWS_ACCESS_KEY_ID = 'AKIA23ZBBWRD5BVZDBM2'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'aiprojectfilestorage'
-# AWS_S3_SIGNATURE_NAME = 's3v4',
-# AWS_S3_REGION_NAME = 'ap-southeast-2'
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL =  None
-# AWS_S3_VERITY = True
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_S3_CUSTOM_DOMAIN="aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com"
 
 
 AWS_ACCESS_KEY_ID = 'AKIAVRUVSZ4K26Q5BVWB'

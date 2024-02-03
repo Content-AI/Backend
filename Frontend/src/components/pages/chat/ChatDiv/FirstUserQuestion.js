@@ -10,7 +10,7 @@ const FirstUserQuestion = (props) => {
         <div className="w-6 h-6 rounded-full order-last overflow-hidden">
             <img
             className="w-full h-full rounded-full"
-            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+            src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
             alt="User"
             />
         </div>

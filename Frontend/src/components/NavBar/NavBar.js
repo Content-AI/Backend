@@ -544,20 +544,20 @@ const Navbar = () => {
                         {PROFILE_DATA ? (
                           PROFILE_DATA.profile_pic ? (
                             <img
-                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                              src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                               alt="PP"
                               className="w-[40px] h-[40px] rounded-full"
                             />
                           ) : (
                             <img
-                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                              src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                               alt="Image"
                               className="w-[40px] h-[40px] rounded-full"
                             />
                           )
                         ) : (
                           <img
-                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                            src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                             alt="Image"
                             className="w-[40px] h-[40px] rounded-full"
                           />
@@ -882,20 +882,20 @@ const Navbar = () => {
                                         {PROFILE_DATA ? (
                                           PROFILE_DATA.profile_pic ? (
                                             <img
-                                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                              src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                                               alt="PP"
                                               className="w-[40px] h-[40px] rounded-full"
                                             />
                                           ) : (
                                             <img
-                                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                              src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                                               alt="Image"
                                               className="w-[40px] h-[40px] rounded-full"
                                             />
                                           )
                                         ) : (
                                           <img
-                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                            src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                                             alt="Image"
                                             className="w-[40px] h-[40px] rounded-full"
                                           />

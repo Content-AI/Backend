@@ -42,7 +42,7 @@ const imp_manaully = [
     description:
       "Generate WorkFlow to Create Content.",
     icon: "WorkFlow",
-    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/workflow.png",
+    img:"https://uffiafilestorage.s3.amazonaws.com/icons/workflow.png",
     isPremium: true,
     link:"/workflow"
   },
@@ -51,7 +51,7 @@ const imp_manaully = [
     description:
       "Transform your audio visual content into concise and insightful summaries.",
     icon: "ReacapBuildericon",
-    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png",
+    img:"https://uffiafilestorage.s3.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png",
     isPremium: false,
     link:"/recap_builder"
   },{
@@ -59,7 +59,7 @@ const imp_manaully = [
     description:
     "Turn speech into text with ease for accurate content.",
     icon: "Transcribe",
-    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Transcribe+speech.png",
+    img:"https://uffiafilestorage.s3.amazonaws.com/icons/Transcribe+speech.png",
     isPremium: true,
     link:"/transcribe-speech"
   },
@@ -68,7 +68,7 @@ const imp_manaully = [
   //   description:
   //     "Get the key bullet points from a piece of content.",
   //   icon: "Shot",
-  //   img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/1_T3DPBTv.png",
+  //   img:"https://uffiafilestorage.s3.amazonaws.com/icons/1_T3DPBTv.png",
   //   isPremium: false,
   // },
   {
@@ -76,7 +76,7 @@ const imp_manaully = [
     description:
       "Express your creativity through the power of art.",
     icon: "Art",
-    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png",
+    img:"https://uffiafilestorage.s3.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png",
     isPremium: true,
     link:"/art"
   }
@@ -288,7 +288,7 @@ useEffect(()=>{
 
                       <div className="rounded-s-xl rounded-e-xl mb-3">
                         <img
-                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
+                          src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/card--placeholder.svg"
                           alt=""
                           className="w-full h-full dark:opacity-60"
                         />

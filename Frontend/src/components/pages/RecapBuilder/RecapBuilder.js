@@ -497,7 +497,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     </button>
                     <img
                       className="w-full h-full object-contain rounded-full"
-                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/recap_builder.png"
+                      src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/recap_builder.png"
                     />
                   </div>
                   <div className="flex-1 pl-6">

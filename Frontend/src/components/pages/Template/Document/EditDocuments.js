@@ -1063,7 +1063,7 @@ function EditDocuments() {
                                               <div class="flex-shrink-0 w-10 h-10">
                                                   <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
                                                   <img
-                                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                                      src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
                                                       className="w-[35px] h-[35px] rounded-full"
                                                     />
                                                   </div>

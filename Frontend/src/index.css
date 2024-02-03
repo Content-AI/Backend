@@ -183,7 +183,7 @@ code {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  background-image: url("https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/loading.gif");
+  background-image: url("https://uffiafilestorage.s3.amazonaws.com/icons/loading.gif");
   background-position: 10px 50%;
   background-size: contain;
   background-repeat: no-repeat;

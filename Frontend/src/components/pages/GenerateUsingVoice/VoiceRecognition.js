@@ -265,7 +265,7 @@ const get_summarize = async() =>{
                       </button>
                     <img
                       className="w-full h-full object-contain rounded-full"
-                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-01+at+10.40.56+AM.png"
+                      src="https://uffiafilestorage.s3.amazonaws.com/icons/Screenshot+2023-10-01+at+10.40.56+AM.png"
                     />
                   </div>
                   <div className="flex-1 pl-6">

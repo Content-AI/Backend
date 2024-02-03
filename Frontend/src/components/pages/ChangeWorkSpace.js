@@ -146,7 +146,7 @@ const ChangeWorkSpace = () => {
                                                 <div className="dark:bg-slate-600 dark:text-white dark:border-white w-full flex text-left items-center px-3 py-2 space-x-3 text-sm border-b border-gray-200 last:border-0 bg-gray-100 pointer-events-none font-medium text-gray-800">
                                                     <div className="bg-amber-700 text-xs w-6 h-6 rounded-full font-bold text-white flex items-center justify-center" 
                                                     >
-                                                        <img src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png" className='rounded-full'/>
+                                                        <img src="https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png" className='rounded-full'/>
                                                     </div>
                                                     <div className="dark:text-white flex flex-col flex-grow truncate">
                                                         <div>{data.workspace_name}</div>

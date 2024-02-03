@@ -30,9 +30,9 @@ if (local == true) {
 
 export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
 
-export const AWS_FRONT_END_IMAGES = "https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/"
+export const AWS_FRONT_END_IMAGES = "https://uffiafilestorage.s3.amazonaws.com/frontend-images/"
 
-export const AWS_FRONT_END_ICONS = "https://aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com/"
+export const AWS_FRONT_END_ICONS = "https://uffiafilestorage.s3.amazonaws.com/"
 
 export const BACK_API_LOGIN_URL =
   "/v1/accounts/accounts_data/login_using_token/";

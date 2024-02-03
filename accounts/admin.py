@@ -31,7 +31,7 @@ admin.site.register(UserFromHubSpot, UserFromHubSpotAdmin)
 admin.site.register(Visitor)
 # admin.site.register(UserApiKey)
 # admin.site.register(SendEmailToUser)
-# admin.site.register(UserTokenGenerated)
+admin.site.register(UserTokenGenerated)
 admin.site.register(OTP_TOKEN)
 # admin.site.register(GeneralSetting)
 
