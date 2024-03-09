@@ -7,6 +7,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from core import settings
 
 import threading
 from django.http import JsonResponse
@@ -84,6 +85,33 @@ from core.settings import stripe_production
 
 from accounts.register import send_otp_email
 
+
+from .serializer import GoogleSocialAuthSerializer,FacebookSocialAuthSerializer
+from rest_framework.generics import GenericAPIView
+from rest_framework import status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from accounts.serializer import UserCreateSerializer
+from core.settings import FRONT_END_LINKEDIN,FRONT_END_GOOGLE
+from core.settings import client_id,client_secret
+from core.settings import client_id_google,client_secret_google
+
+from accounts.register import register_social_user
+from core.settings import HUBSPOT_API_KEY_TICKETS
+from hubspot_data.models import TicketIssue
+from subscriptions.models import EnterprisePlanList,MonthlyPlanList,YearlyPlanList
+from accounts.models import UserFromHubSpot
+from django.http import JsonResponse
+from django.db.models import F, Sum
+from django.views import View
+from accounts.models import Visitor
+from rest_framework.views import APIView
+from accounts.models import Visitor
+from collections import defaultdict
+
+from accounts.country import country_names
+
+
 if stripe_production:
     stripe_key="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"
     stripe.api_key="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"
@@ -137,6 +165,7 @@ def get_client_ip(request):
 def generate_otp_by_email(request):
 
     email =request.data.get('email')
+
     
     if email is None:
         return Response({"detail":"Email Required"},status=400)
@@ -149,16 +178,16 @@ def generate_otp_by_email(request):
         Delete this if condition for email check 
         this is for 14 days trail to see the if it will be valid or not
     '''
-
-    if match:
-        pass
-        domain = match.group(1)
-        if is_domain_up(domain):
+    if settings.pro:
+        if match:
             pass
+            domain = match.group(1)
+            if is_domain_up(domain):
+                pass
+            else:
+                return Response({"detail":"This type of email isn't accepted"},status=400)
         else:
-            return Response({"detail":"This type of email isn't accepted"},status=400)
-    else:
-        return Response({"detail":"Invalid email address"},status=400)
+            return Response({"detail":"Invalid email address"},status=400)
 
 
     digits = [i for i in range(0, 10)]
@@ -188,15 +217,15 @@ def generate_otp_by_email(request):
             hash_hex = hash_object.hexdigest()
             UserApiKey.objects.create(user=user,api_key=hash_hex[:25])
 
-            try:
-                # resp_of_hubspot=send_hubspot_request(user.email,email_name,"")
-                # Create a thread for the request and processing
-                thread = threading.Thread(target=send_hubspot_request, args=(user.email,email_name,""))
-                thread.start()
-                thread.join()
-            except:
-                pass
-
+            if settings.pro:
+                try:
+                    # resp_of_hubspot=send_hubspot_request(user.email,email_name,"")
+                    # Create a thread for the request and processing
+                    thread = threading.Thread(target=send_hubspot_request, args=(user.email,email_name,""))
+                    thread.start()
+                    thread.join()
+                except:
+                    pass
 
             TeamMemberList.objects.create(
                 Workspace_Id=ins,
@@ -324,6 +353,48 @@ def login_user_using_token(request):
     return Response({"message":"token needed"}, status=400)
 
 
+
+
+class Login(APIView):
+    def post(self, request):
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        if email is None or password is None:
+            return Response({'error': 'Please provide both email and password'}, status=status.HTTP_400_BAD_REQUEST)
+        # breakpoint()
+        user = UserAccount.objects.filter(email=email).first()
+
+        if user is not None:
+            # Assuming generate_token is defined elsewhere
+            token = generate_token(user)
+            response_data = {
+                "user": {
+                    "uid": user.id,
+                    "role": "admin",
+                    "data": {
+                        "displayName": user.first_name,
+                        "photoURL": "assets/images/avatars/brian-hughes.jpg",
+                        "email": user.email,
+                        "settings": {
+                            "layout": {},
+                            "theme": {}
+                        },
+                        "shortcuts": {
+                            "apps.calendar",
+                            "apps.mailbox",
+                            "apps.contacts"
+                        }
+                    }
+                },
+                "access_token": token.get('access')
+            }
+            return Response(response_data, status=200)
+        else:
+            return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 @csrf_exempt
 @api_view(['POST'])
 def survey_data(request):
@@ -410,9 +481,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
 
 
-from .serializer import GoogleSocialAuthSerializer,FacebookSocialAuthSerializer
-from rest_framework.generics import GenericAPIView
-from rest_framework import status
+
 
 class GoogleSocialAuthView(GenericAPIView):
     serializer_class = GoogleSocialAuthSerializer
@@ -460,9 +529,7 @@ class GeneralSettingViewSet(viewsets.ViewSet):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from accounts.serializer import UserCreateSerializer
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -488,11 +555,7 @@ def users_data(request):
 
 
 
-from core.settings import FRONT_END_LINKEDIN,FRONT_END_GOOGLE
-from core.settings import client_id,client_secret
-from core.settings import client_id_google,client_secret_google
 
-from accounts.register import register_social_user
 
 @api_view(['GET','POST'])
 def google_update(request):
@@ -592,7 +655,6 @@ def total_account(request):
     return Response({"users_count":ins},200)
 
 
-from core.settings import HUBSPOT_API_KEY_TICKETS
 
 
 def function_create_ticket_in_hubspot(data):
@@ -633,7 +695,6 @@ def function_create_ticket_in_hubspot(data):
 
 
 
-from hubspot_data.models import TicketIssue
 
 @api_view(['POST','GET'])
 @permission_classes([IsAuthenticated])
@@ -658,8 +719,6 @@ def create_tickets(request):
         return Response(issues_list,200)
 
 
-from subscriptions.models import EnterprisePlanList,MonthlyPlanList,YearlyPlanList
-from accounts.models import UserFromHubSpot
 
 @api_view(['GET'])
 def why_subscribe(request):
@@ -771,11 +830,7 @@ def visitor_data(request):
 
 
 
-# views.py
-from django.http import JsonResponse
-from django.db.models import F, Sum
-from django.views import View
-from accounts.models import Visitor
+
 
 class VisitorDataApiView(View):
     def get(self, request):
@@ -805,12 +860,6 @@ class VisitorDataApiView(View):
         return JsonResponse(consolidated_data, safe=False)
 
 
-
-from rest_framework.views import APIView
-from accounts.models import Visitor
-from collections import defaultdict
-
-from accounts.country import country_names
 
 class AggregatedVisitorStats(APIView):
     def get(self, request, format=None):
@@ -858,6 +907,3 @@ def generate_new_api_key(request):
         return Response({"api_key":api_key.api_key},status=200)
     else:
         return Response({"message":"upgrade your plan"},status=400)
-
-
-

@@ -16,14 +16,14 @@ import os
 
 SECRET_KEY = 'LOOWJ@89324aerweroidrjeweklr329329023903kjqwenrwkeqjWIOIWIWWJK3232i3asdfadsfdasf'
 
-# use_db_live="local"
-use_db_live="postgres"
+use_db_live="local"
+# use_db_live="postgres"
 
-pro=True
-# pro=False
+# pro=True
+pro=False
 
-stripe_production=True
-# stripe_production=False
+# stripe_production=True
+stripe_production=False
 
 if pro:
     DEBUG = False
@@ -90,8 +90,8 @@ MIDDLEWARE = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "codieburh682@gmail.com"
-EMAIL_HOST_PASSWORD = "geyebcxjxaqfbfve"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SASS'
 

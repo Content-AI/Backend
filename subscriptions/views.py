@@ -329,12 +329,13 @@ def stripe_webhook(request):
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
         return JsonResponse({'error': 'Invalid signature'}, status=400)
+    
 
     try:
         customer_stripe_id=request.data["data"]["object"]["customer"]
         instance = Subscription.objects.get(customer_stripe_id=customer_stripe_id)
 
-        if request.data['data']['object']['status'] == "trialing":
+        if request.data['data']['object']['status'] == "trialing" or event.type == "invoice.payment_failed":
             # Handle trialing subscription
             instance.restrict_user = True
             instance.subscription_type="annually"
@@ -342,7 +343,11 @@ def stripe_webhook(request):
             instance.status="trial"
             user_manipulate_token=instance.user_id
             return JsonResponse({'status': 'Trail Ends'}, status=200)
-
+        
+        if request.data['data']['object']['amount_paid'] == 0:
+            
+            return JsonResponse({'status': 'Payment isn"t done'}, status=200)
+            
         else:
             # Handle the event based on its type
             if event.type == 'customer.subscription.updated':
@@ -542,7 +547,6 @@ def stripe_webhook(request):
                     generate_instance=GenerateWordRestrictionForUser.objects.get(user=user_manipulate_token)
                     generate_instance.words=total_words_for_trail
                     generate_instance.save()
-
         return JsonResponse({'status': 'success'}, status=200)
     except:
         return JsonResponse({'status': str(e)}, status=400)
