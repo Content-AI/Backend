@@ -353,6 +353,7 @@ def login_user_using_token(request):
     return Response({"message":"token needed"}, status=400)
 
 
+image_url = "https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
 
 
 class Login(APIView):
@@ -373,7 +374,7 @@ class Login(APIView):
                     "role": "admin",
                     "data": {
                         "displayName": user.first_name,
-                        "photoURL": "assets/images/avatars/brian-hughes.jpg",
+                        "photoURL": image_url,
                         "email": user.email,
                         "settings": {
                             "layout": {},
@@ -390,8 +391,53 @@ class Login(APIView):
             }
             return Response(response_data, status=200)
         else:
-            return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+            error = [
+                    {
+                        "message": "Check your email address",
+                        "type": "email"
+                    },
+                    {
+                        "message": "Check your password",
+                        "type": "password"
+                    }
+            ]
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
+
+class GetUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Assuming generate_token is defined elsewhere
+        token = generate_token(user)
+
+        response_data = {
+            "status": 200,
+            "data": {
+                "uid": user.id,
+                "role": "admin",
+                "data": {
+                    "displayName": user.first_name,
+                    "photoURL": image_url,
+                    "email": user.email,
+                    "settings": {
+                        "layout": {},
+                        "theme": {}
+                    },
+                    "shortcuts": [
+                        "apps.calendar",
+                        "apps.mailbox",
+                        "apps.contacts"
+                    ]
+                }
+            },
+            "headers": {
+                "token": token.get('access')
+            }
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 

@@ -2,7 +2,7 @@ from django.urls import path, include
 from accounts import views
 from rest_framework_simplejwt.views import (TokenRefreshView)
 from rest_framework.routers import DefaultRouter
-from .views import generate_new_api_key,Login, get_api_key, why_subscribe, create_tickets, google_update, linkedin, visitor_data, track_visitor, total_account, users_data, GeneralSettingViewSet, CookieTokenRefreshView, GoogleSocialAuthView, FacebookSocialAuthView, CookieTokenObtainPairView
+from .views import generate_new_api_key,Login,GetUser, get_api_key, why_subscribe, create_tickets, google_update, linkedin, visitor_data, track_visitor, total_account, users_data, GeneralSettingViewSet, CookieTokenRefreshView, GoogleSocialAuthView, FacebookSocialAuthView, CookieTokenObtainPairView
 
 from accounts.views import VisitorDataApiView
 from accounts.views import AggregatedVisitorStats,Login
@@ -56,6 +56,9 @@ urlpatterns = [
 
      path('accounts_data/login/',
          Login.as_view(), name='login'),
+     
+     path('get_user/',
+         GetUser.as_view(), name='get_user'),
 
 
 ]
