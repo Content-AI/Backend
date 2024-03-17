@@ -59,6 +59,4 @@ urlpatterns = [
      
      path('get_user/',
          GetUser.as_view(), name='get_user'),
-
-
 ]
