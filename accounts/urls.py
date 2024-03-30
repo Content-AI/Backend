@@ -32,7 +32,6 @@ urlpatterns = [
 
     path('generate/auth_token/', views.login_user_using_token,
          name='login_user_using_token'),
-
     path('survey/data/', views.survey_data, name='survey_data'),
 
     path('total_account/', views.total_account, name='total_account'),
@@ -57,6 +56,16 @@ urlpatterns = [
      path('accounts_data/login/',
          Login.as_view(), name='login'),
      
+     path('accounts_data/register/',
+         views.register, name='register'),
+     
      path('get_user/',
          GetUser.as_view(), name='get_user'),
+
+
+    path('generate/lost_password/', views.lost_password,
+         name='lost_password'),
+
+    path('generate/reset_password/', views.reset_password,
+         name='reset_password'),
 ]
