@@ -7,6 +7,9 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from core import settings
+import random
+import string
 
 import threading
 from django.http import JsonResponse
@@ -84,6 +87,33 @@ from core.settings import stripe_production
 
 from accounts.register import send_otp_email
 
+
+from .serializer import GoogleSocialAuthSerializer,FacebookSocialAuthSerializer
+from rest_framework.generics import GenericAPIView
+from rest_framework import status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from accounts.serializer import UserCreateSerializer
+from core.settings import FRONT_END_LINKEDIN,FRONT_END_GOOGLE
+from core.settings import client_id,client_secret
+from core.settings import client_id_google,client_secret_google
+
+from accounts.register import register_social_user
+from core.settings import HUBSPOT_API_KEY_TICKETS
+from hubspot_data.models import TicketIssue
+from subscriptions.models import EnterprisePlanList,MonthlyPlanList,YearlyPlanList
+from accounts.models import UserFromHubSpot
+from django.http import JsonResponse
+from django.db.models import F, Sum
+from django.views import View
+from accounts.models import Visitor
+from rest_framework.views import APIView
+from accounts.models import Visitor
+from collections import defaultdict
+
+from accounts.country import country_names
+
+
 if stripe_production:
     stripe_key="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"
     stripe.api_key="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"
@@ -137,6 +167,7 @@ def get_client_ip(request):
 def generate_otp_by_email(request):
 
     email =request.data.get('email')
+
     
     if email is None:
         return Response({"detail":"Email Required"},status=400)
@@ -149,16 +180,16 @@ def generate_otp_by_email(request):
         Delete this if condition for email check 
         this is for 14 days trail to see the if it will be valid or not
     '''
-
-    if match:
-        pass
-        domain = match.group(1)
-        if is_domain_up(domain):
+    if settings.pro:
+        if match:
             pass
+            domain = match.group(1)
+            if is_domain_up(domain):
+                pass
+            else:
+                return Response({"detail":"This type of email isn't accepted"},status=400)
         else:
-            return Response({"detail":"This type of email isn't accepted"},status=400)
-    else:
-        return Response({"detail":"Invalid email address"},status=400)
+            return Response({"detail":"Invalid email address"},status=400)
 
 
     digits = [i for i in range(0, 10)]
@@ -188,15 +219,15 @@ def generate_otp_by_email(request):
             hash_hex = hash_object.hexdigest()
             UserApiKey.objects.create(user=user,api_key=hash_hex[:25])
 
-            try:
-                # resp_of_hubspot=send_hubspot_request(user.email,email_name,"")
-                # Create a thread for the request and processing
-                thread = threading.Thread(target=send_hubspot_request, args=(user.email,email_name,""))
-                thread.start()
-                thread.join()
-            except:
-                pass
-
+            if settings.pro:
+                try:
+                    # resp_of_hubspot=send_hubspot_request(user.email,email_name,"")
+                    # Create a thread for the request and processing
+                    thread = threading.Thread(target=send_hubspot_request, args=(user.email,email_name,""))
+                    thread.start()
+                    thread.join()
+                except:
+                    pass
 
             TeamMemberList.objects.create(
                 Workspace_Id=ins,
@@ -273,6 +304,141 @@ def generate_otp_by_email(request):
 
 
 
+@api_view(["POST"])
+def register(request):
+    email =request.data.get('email')
+    password =request.data.get('password',None)
+
+    if email is None:
+        return Response({"detail":"Email Required"},status=400)
+    
+    if password is None or len(password) < 6:
+        return Response({"detail":"Password require & Password must be at least 6 characters"},status=400)
+
+    if is_valid_email(email) is False:
+        return Response({"detail":"invalid email address"},status=400)
+    match = re.search(r'@([^@]+)', email)
+    if settings.pro:
+        if match:
+            pass
+            domain = match.group(1)
+            if is_domain_up(domain):
+                pass
+            else:
+                return Response({"detail":"This type of email isn't accepted"},status=400)
+        else:
+            return Response({"detail":"Invalid email address"},status=400)
+
+    digits = [i for i in range(0, 10)]
+    random_str = ""
+    for i in range(6):
+        index = math.floor(random.random() * 10)
+        random_str += str(digits[index])
+    if email:
+        user = UserAccount.objects.filter(email=email).first()
+
+        if user:
+            OTP_TOKEN.objects.create(user_id=user,otp_token=random_str)
+        else:
+            # crate user and also add the Workspace name
+            email_name = email.split("@")[0]
+            user=UserAccount.objects.create(email=email,is_active=False,first_name=email_name)
+            user.set_password(password)
+            user.save()
+            GeneralSetting.objects.create(user_id=user)
+            # create a Workspace every account create
+            ins=Workspace.objects.create(workspace_name=email_name+" Workspace",admin_user_of_workspace=user,admin_or_not=True)
+
+            # create api which can be use by premium acc
+            # Generate a UUID
+            uuid_value = uuid.uuid4()
+            # Convert the UUID to bytes and hash it using MD5
+            hash_object = hashlib.md5(uuid_value.bytes)
+            # Get the hexadecimal digest (32 characters)
+            hash_hex = hash_object.hexdigest()
+            UserApiKey.objects.create(user=user,api_key=hash_hex[:25])
+
+            if settings.pro:
+                try:
+                    thread = threading.Thread(target=send_hubspot_request, args=(user.email,email_name,""))
+                    thread.start()
+                    thread.join()
+                except:
+                    pass
+
+            TeamMemberList.objects.create(
+                Workspace_Id=ins,
+                admin_or_not=True,
+                second_layer_admin_or_not=True,
+                to_show_admin_user_email=user.email,
+                workspace_name=ins.workspace_name,
+                team_member_user=user,
+                )
+            ins_init=InitialWorkShopOfUser.objects.create(workspace_id=ins,user_filter=user,owner_of_workspace=user)
+            GenerateWordRestrictionForUser.objects.create(user=user,words=2000)
+            OTP_TOKEN.objects.create(user_id=user,otp_token=random_str)
+
+            # Create a Stripe customer
+            customer = stripe.Customer.create(
+                email=user.email,
+            )
+            # Create a subscription with a 14-day trial period
+            subscription = stripe.Subscription.create(
+                customer=customer.id,
+                items=[
+                    {
+                        'price': get_price_id("premium","annually"),  # Replace with your actual price ID
+                    },
+                ],
+                trial_period_days=14,
+            )
+            # start with 14 days trail for new user after register
+            instance_subs = Subscription.objects.create(
+                customer_stripe_id=customer.id,
+                subscription_stripe_id=subscription.id,
+                user_id=user,
+                email=user.email,
+                plan="premium",
+                subscription_type="annually",
+                status="trial",
+                started_at= timezone.now(),
+                restrict_user=False
+            )
+
+
+            trail_ends = instance_subs.started_at + timedelta(days=14)
+            instance_update=Subscription.objects.get(id=instance_subs.id)
+            instance_update.trail_ends=trail_ends
+            instance_update.save()
+            
+
+        try:
+            request_ip=get_client_ip(request)
+            browser_details=str(request.META.get('HTTP_USER_AGENT'))
+            thread = threading.Thread(target=send_otp_email, args=(email, random_str,browser_details, request_ip))
+            thread.start()
+            subject = 'Your One-Time Password'
+            template_name = 'otp_email.html'
+            try:
+                name_for_email = user.first_name
+            except:
+                name_for_email=email_name
+            context = {'otp': str(random_str),'name':str(name_for_email),'client_ip':str(get_client_ip(request)),'browser':str(request.META.get('HTTP_USER_AGENT'))}
+            email_content = render_to_string(template_name, context)
+            send_mail(
+                subject,
+                email_content,
+                'test@gmail.com',
+                [email],
+                html_message=email_content,
+                fail_silently=False
+            )
+        except Exception as e:
+            return Response({"error":str(e)}, status=400)
+        return Response({"status":"registered new email","message":"check your email"}, status=status.HTTP_201_CREATED)
+    return Response({"detail":"email needed"}, status=400)
+
+
 
 from datetime import datetime
 import pytz
@@ -315,6 +481,8 @@ def login_user_using_token(request):
             if user_id:
                 user = UserAccount.objects.filter(id=user_id.user_id_id).first()
                 if user:
+                    user.is_active=True
+                    user.save()
                     restriction = OTP_TOKEN.objects.get(otp_token=token)
                     token=generate_token(user)
                     restriction.delete()
@@ -322,6 +490,162 @@ def login_user_using_token(request):
                 else:
                     return Response({"message":"not valid token"}, status=400)
     return Response({"message":"token needed"}, status=400)
+
+
+image_url = "https://uffiafilestorage.s3.amazonaws.com/frontend-images/default.png"
+
+
+from django.contrib.auth.hashers import check_password
+
+class Login(APIView):
+    def post(self, request):
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        if email is None or password is None:
+            return Response({'error': 'Please provide both email and password'}, status=status.HTTP_400_BAD_REQUEST)
+        user = UserAccount.objects.filter(email=email, is_active=True).first()
+
+        if user is None:
+            return Response({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_password(password, user.password):
+            return Response({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
+        if user is not None:
+            # Assuming generate_token is defined elsewhere
+            token = generate_token(user)
+            response_data = {
+                "user": {
+                    "uid": user.id,
+                    "role": "admin",
+                    "data": {
+                        "displayName": user.first_name,
+                        "photoURL": image_url,
+                        "email": user.email,
+                        "settings": {
+                            "layout": {},
+                            "theme": {}
+                        },
+                        "shortcuts": {
+                            "apps.calendar",
+                            "apps.mailbox",
+                            "apps.contacts"
+                        }
+                    }
+                },
+                "access_token": token.get('access')
+            }
+            return Response(response_data, status=200)
+        else:
+            error = [
+                    {
+                        "message": "Check your email address",
+                        "type": "email"
+                    },
+                    {
+                        "message": "Check your password",
+                        "type": "password"
+                    }
+            ]
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['POST'])
+def lost_password(request):
+    email = request.data.get('email')
+    if email is None:
+        return Response({'error': 'Please provide email'}, status=status.HTTP_400_BAD_REQUEST)
+
+    '''
+        If lost password request new one
+    '''
+    user = UserAccount.objects.filter(email=email).exists()
+    if user:
+        digits = [i for i in range(0, 10)]
+        random_str = ""
+        for i in range(6):
+            random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+        user = UserAccount.objects.get(email=email)
+        OTP_TOKEN.objects.create(user_id=user,otp_token=random_str)
+
+        subject = 'Change Password Request'
+        template_name = 'password_token.html'
+        try:
+            name_for_email = user.first_name
+        except:
+            name_for_email=email_name
+        context = {'otp': str(random_str),'name':str(name_for_email)}
+        email_content = render_to_string(template_name, context)
+        breakpoint()
+        send_mail(
+            subject,
+            email_content,
+            'test@gmail.com',
+            [email],
+            html_message=email_content,
+            fail_silently=False
+        )
+        return Response({'message': "Check your email"}, status=200)
+    return Response({'error': "User not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def reset_password(request):
+    token = request.data.get('token')
+    password = request.data.get('password')
+
+    if password is None:
+        return Response({'error': 'Please provide password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if token is None:
+        return Response({'error': 'Please provide token'}, status=status.HTTP_400_BAD_REQUEST)
+
+    restriction = OTP_TOKEN.objects.filter(otp_token=token).first()
+
+    if restriction:
+        user = restriction.user_id
+        user.set_password(password)
+        user.save()
+        restriction.delete()
+        return Response({'message': "Password reset successfully"}, status=200)
+    return Response({'error': "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class GetUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Assuming generate_token is defined elsewhere
+        token = generate_token(user)
+
+        response_data = {
+            "status": 200,
+            "data": {
+                "uid": user.id,
+                "role": "admin",
+                "data": {
+                    "displayName": user.first_name,
+                    "photoURL": image_url,
+                    "email": user.email,
+                    "settings": {
+                        "layout": {},
+                        "theme": {}
+                    },
+                    "shortcuts": [
+                        "apps.calendar",
+                        "apps.mailbox",
+                        "apps.contacts"
+                    ]
+                }
+            },
+            "headers": {
+                "token": token.get('access')
+            }
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 
 @csrf_exempt
@@ -410,9 +734,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
 
 
-from .serializer import GoogleSocialAuthSerializer,FacebookSocialAuthSerializer
-from rest_framework.generics import GenericAPIView
-from rest_framework import status
+
 
 class GoogleSocialAuthView(GenericAPIView):
     serializer_class = GoogleSocialAuthSerializer
@@ -460,9 +782,7 @@ class GeneralSettingViewSet(viewsets.ViewSet):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from accounts.serializer import UserCreateSerializer
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -488,11 +808,7 @@ def users_data(request):
 
 
 
-from core.settings import FRONT_END_LINKEDIN,FRONT_END_GOOGLE
-from core.settings import client_id,client_secret
-from core.settings import client_id_google,client_secret_google
 
-from accounts.register import register_social_user
 
 @api_view(['GET','POST'])
 def google_update(request):
@@ -592,7 +908,6 @@ def total_account(request):
     return Response({"users_count":ins},200)
 
 
-from core.settings import HUBSPOT_API_KEY_TICKETS
 
 
 def function_create_ticket_in_hubspot(data):
@@ -633,7 +948,6 @@ def function_create_ticket_in_hubspot(data):
 
 
 
-from hubspot_data.models import TicketIssue
 
 @api_view(['POST','GET'])
 @permission_classes([IsAuthenticated])
@@ -658,8 +972,6 @@ def create_tickets(request):
         return Response(issues_list,200)
 
 
-from subscriptions.models import EnterprisePlanList,MonthlyPlanList,YearlyPlanList
-from accounts.models import UserFromHubSpot
 
 @api_view(['GET'])
 def why_subscribe(request):
@@ -771,11 +1083,7 @@ def visitor_data(request):
 
 
 
-# views.py
-from django.http import JsonResponse
-from django.db.models import F, Sum
-from django.views import View
-from accounts.models import Visitor
+
 
 class VisitorDataApiView(View):
     def get(self, request):
@@ -805,12 +1113,6 @@ class VisitorDataApiView(View):
         return JsonResponse(consolidated_data, safe=False)
 
 
-
-from rest_framework.views import APIView
-from accounts.models import Visitor
-from collections import defaultdict
-
-from accounts.country import country_names
 
 class AggregatedVisitorStats(APIView):
     def get(self, request, format=None):
@@ -858,6 +1160,3 @@ def generate_new_api_key(request):
         return Response({"api_key":api_key.api_key},status=200)
     else:
         return Response({"message":"upgrade your plan"},status=400)
-
-
-

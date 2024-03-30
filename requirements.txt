@@ -68,5 +68,5 @@ django-storages==1.14.2
 
 
 
-django-ses==3.5.2
-pyobjc-framework-AutomaticAssessmentConfiguration==10.0
+# django-ses==3.5.2
+# pyobjc-framework-AutomaticAssessmentConfiguration==10.0
